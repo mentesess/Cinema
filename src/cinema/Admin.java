@@ -13,10 +13,10 @@ public class Admin {
 	public static void main(String[] args) {
 
 		boolean[][] emptySeat;
-		Hall hall = new Hall(1, 4, 4, "ErolEgemen");
+		Hall hall = new Hall(1, 5,5, "ErolEgemen");
 		Session movie = new Session("Kaybedenler Kulubu", hall, Hours.EIGHTEEN);
-		new Ticket(3, 3, movie);
-		new Ticket(3, 4, movie);
+		new Ticket(1, 3, movie);
+		new Ticket(2, 4, movie);
 		emptySeat = movie.getEmptySeats();
 		for (int i = 0; i < emptySeat.length; i++) {
 			for (int j = 0; j < emptySeat[i].length; j++) {
@@ -24,6 +24,7 @@ public class Admin {
 			}
 			System.out.println();
 		}
+		System.out.println(movie.getAvailable(2));
 		System.out.println(movie);
 
 	}

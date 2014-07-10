@@ -1,8 +1,10 @@
 package cinema.model;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import cinema.exceptions.SameTicketException;
 
@@ -75,13 +77,61 @@ public class Session {
 		boolean[][] emptySeats = new boolean[hall.getRows()][hall.getCols()];
 		for (int i = 0; i < emptySeats.length; i++) {
 			for (int j = 0; j < emptySeats[i].length; j++) {
-				if (tickets.containsKey((i+1) * emptySeats[i].length + j+1)) {
-					emptySeats[i][j] = true;
-				} else {
+				if (tickets.containsKey((i + 1) * emptySeats[i].length + j + 1)) {
 					emptySeats[i][j] = false;
+				} else {
+					emptySeats[i][j] = true;
 				}
 			}
 		}
 		return emptySeats;
+	}
+
+	/**
+	 * 
+	 * @return all available seats
+	 */
+	public int getAvailable() {
+		boolean[][] emptySeats = getEmptySeats();
+		int counter = 0;
+		for (int i = 0; i < emptySeats.length; i++) {
+			for (int j = 0; j < emptySeats[i].length; j++) {
+				if (emptySeats[i][j]) {
+					counter++;
+				}
+			}
+		}
+		return counter;
+	}
+
+	/**
+	 * 
+	 * @param order
+	 *            seats order
+	 * @return all available seats in this order
+	 */
+	public List<Ticket> getAvailable(int numPeople) {
+		boolean[][] emptySeats = getEmptySeats();
+		int counter = 0;
+		List<Ticket> order =  new ArrayList<>();
+		for (int i = 0; i < emptySeats.length; i++) {
+			for (int j = 0; j < emptySeats[i].length; j++) {
+				if (emptySeats[i][j] == false) {
+					counter = 0;
+				} else {
+					counter++;
+				}
+				if (counter == numPeople)
+				{
+					while(counter>0){
+						order.add(new Ticket(i+1-counter, j+1, this));
+						counter--;
+					}
+					return order;
+				}
+			}
+			counter=0;
+		}
+		return order;
 	}
 }
