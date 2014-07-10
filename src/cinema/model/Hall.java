@@ -22,9 +22,15 @@ public class Hall {
 	}
 	public Hall(int id,int rows, int cols, String name) {
 		super();
-		this.id= id;
+		this.setId(id);
 		this.rows = rows;
 		this.cols = cols;
 		this.name = name;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 }
