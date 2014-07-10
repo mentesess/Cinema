@@ -77,7 +77,7 @@ public class Session {
 		boolean[][] emptySeats = new boolean[hall.getRows()][hall.getCols()];
 		for (int i = 0; i < emptySeats.length; i++) {
 			for (int j = 0; j < emptySeats[i].length; j++) {
-				if (tickets.containsKey((i + 1) * emptySeats[i].length + j + 1)) {
+				if (tickets.containsKey((i) * emptySeats[i].length + j)) {
 					emptySeats[i][j] = false;
 				} else {
 					emptySeats[i][j] = true;
@@ -110,10 +110,9 @@ public class Session {
 	 *            seats order
 	 * @return all available seats in this order
 	 */
-	public List<Ticket> getAvailable(int numPeople) {
+	private boolean getAvailable(int numPeople) {
 		boolean[][] emptySeats = getEmptySeats();
 		int counter = 0;
-		List<Ticket> order =  new ArrayList<>();
 		for (int i = 0; i < emptySeats.length; i++) {
 			for (int j = 0; j < emptySeats[i].length; j++) {
 				if (emptySeats[i][j] == false) {
@@ -121,17 +120,44 @@ public class Session {
 				} else {
 					counter++;
 				}
-				if (counter == numPeople)
-				{
-					while(counter>0){
-						order.add(new Ticket(i+1-counter, j+1, this));
+				if (counter == numPeople) {
+					while (counter > 0) {
+						new Ticket(i, j - counter+1, this);
 						counter--;
 					}
-					return order;
+					return true;
 				}
 			}
-			counter=0;
+			counter = 0;
 		}
-		return order;
+		return false;
 	}
+
+	private boolean getSeat(int numPeople) {
+		boolean[][] emptySeats = getEmptySeats();
+		for (int i = 0; i < emptySeats.length; i++) {
+			for (int j = 0; j < emptySeats[i].length; j++) {
+				if (numPeople == 0) {
+					return true;
+				} 
+				else{
+					if (emptySeats[i][j] == true) {
+						numPeople--;
+						new Ticket(i, j, this);
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean takeTicket(int numPeople, boolean separate) {
+		if (separate == true) {
+			return getAvailable(numPeople);
+		} else {
+			return getSeat(numPeople);
+		}
+
+	}
+
 }

@@ -104,4 +104,10 @@ public class Ticket implements Comparable<Ticket> {
 			return false;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "Ticket [rows=" + rows + ", cols=" + cols + ", Hall="
+				+ session.getHall().getName() + "]";
+	}
 }
